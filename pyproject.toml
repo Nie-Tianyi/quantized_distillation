@@ -1,0 +1,54 @@
+[project]
+name = "quantized-distillation"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "jupyter>=1.1.1",
+    "kagglehub>=0.3.13",
+    "matlib>=0.1.2",
+    "nltk>=3.9.2",
+    "numpy>=2.3.5",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
+    "torch>=2.9.1",
+    "tqdm>=4.67.1",
+    "transformers>=4.57.1",
+]
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu130", marker = "sys_platform == 'windows'"},
+    { index = "pytorch-cpu", marker = "sys_platform != 'windows'"},
+]
+
+torchvision = [
+    { index = "pytorch-cu130", marker = "sys_platform == 'windows'"},
+    { index = "pytorch-cpu", marker = "sys_platform != 'windows'"},
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[project.optional-dependencies]
+cuda = [
+    "torch>=2.9.0; sys_platform == 'windows'",
+    "torch>=2.9.0; sys_platform != 'windows'",
+    "torchvision>=0.24.0; sys_platform == 'windows'",
+    "torchvision>=0.24.0; sys_platform != 'windows'",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13",
+]
+
