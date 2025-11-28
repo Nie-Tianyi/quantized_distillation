@@ -17,7 +17,7 @@ class DistillationLoss(nn.Module):
         # 知识蒸馏损失（软标签）
         soft_loss = self.kl_loss(
             F.log_softmax(student_logits / self.temperature, dim=1),
-            F.softmax(teacher_logits / self.temperature, dim=1),
+            F.softmax(teacher_logits.detach() / self.temperature, dim=1),
         ) * (self.temperature**2)
 
         # 交叉熵损失（硬标签）
@@ -48,7 +48,7 @@ class ProgressiveDistillation(nn.Module):
         # 蒸馏损失
         soft_loss = self.kl_loss(
             F.log_softmax(student_logits / temperature, dim=1),
-            F.softmax(teacher_logits / temperature, dim=1),
+            F.softmax(teacher_logits.detach() / temperature, dim=1),
         ) * (temperature**2)
 
         # 交叉熵损失
@@ -90,7 +90,7 @@ class FeatureAdaptiveDistillation(nn.Module):
         # 输出蒸馏
         output_loss = self.kl_loss(
             F.log_softmax(student_logits / self.temperature, dim=1),
-            F.softmax(teacher_logits / self.temperature, dim=1),
+            F.softmax(teacher_logits.detach() / self.temperature, dim=1),
         ) * (self.temperature**2)
 
         # 交叉熵损失
