@@ -30,11 +30,12 @@ class DistillationLoss(nn.Module):
 class ProgressiveDistillation(nn.Module):
     """渐进式蒸馏 - 逐步增加蒸馏强度"""
 
-    def __init__(self, initial_alpha=0.1, final_alpha=0.7, temperature=4):
+    def __init__(self, initial_alpha=0.1, final_alpha=0.7, initial_temperature=4, final_temperature=8):
         super(ProgressiveDistillation, self).__init__()
         self.initial_alpha = initial_alpha
         self.final_alpha = final_alpha
-        self.temperature = temperature
+        self.initial_temperature = initial_temperature
+        self.final_temperature = final_temperature
         self.kl_loss = nn.KLDivLoss(reduction="batchmean")
         self.ce_loss = nn.CrossEntropyLoss()
 
@@ -42,17 +43,18 @@ class ProgressiveDistillation(nn.Module):
         # 渐进调整alpha
         progress = epoch / total_epochs
         alpha = self.initial_alpha + (self.final_alpha - self.initial_alpha) * progress
+        temperature = self.initial_temperature + (self.final_temperature - self.initial_temperature) * progress
 
         # 蒸馏损失
         soft_loss = self.kl_loss(
-            F.log_softmax(student_logits / self.temperature, dim=1),
-            F.softmax(teacher_logits / self.temperature, dim=1),
-        ) * (self.temperature**2)
+            F.log_softmax(student_logits / temperature, dim=1),
+            F.softmax(teacher_logits / temperature, dim=1),
+        ) * (temperature**2)
 
         # 交叉熵损失
         hard_loss = self.ce_loss(student_logits, targets)
 
-        return alpha * soft_loss + (1 - alpha) * hard_loss, alpha
+        return alpha * soft_loss + (1 - alpha) * hard_loss
 
 
 class FeatureAdaptiveDistillation(nn.Module):

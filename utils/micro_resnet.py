@@ -7,7 +7,7 @@ from utils.cifar100 import CIFAR100Data
 
 
 class MicroResNet(nn.Module):
-    """超小型ResNet，适合快速实验"""
+    """超小型ResNet"""
 
     def __init__(self, num_classes=100):
         super(MicroResNet, self).__init__()
