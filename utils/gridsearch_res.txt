@@ -1,0 +1,12 @@
+alpha=0.3, temperature=2, best_acc=84.35
+alpha=0.3, temperature=4, best_acc=85.09
+alpha=0.3, temperature=8, best_acc=84.71
+alpha=0.5, temperature=2, best_acc=84.69
+alpha=0.5, temperature=4, best_acc=84.57
+alpha=0.5, temperature=8, best_acc=84.18
+alpha=0.7, temperature=2, best_acc=84.39
+alpha=0.7, temperature=4, best_acc=84.43
+alpha=0.7, temperature=8, best_acc=83.99
+alpha=0.9, temperature=2, best_acc=83.78
+alpha=0.9, temperature=4, best_acc=83.85
+alpha=0.9, temperature=8, best_acc=84.03
